@@ -12,13 +12,31 @@ async function getItems() {
     return items;
 }
 
-router.get('/', function (req, res) {
+router.get('/', async (req, res) => {
     getItems().then(function (foundItems) {
-        res.render("list", { listTitle: "Today", newItems: foundItems });
+        res.send(foundItems);
+        // res.send(JSON.stringify(foundItems));
     });
+
+    // const foundItems = await Item.find({}).then({
+    //     res.send(foundItems)
+    // });
+
+    // const todayList = await Item.find({})((err, todayData) => {
+    //     if (err) throw err;
+    //     if (todayData) {
+    //         // res.json({listTitle: "Today", newItems: todayData})
+    //         res.send(JSON.stringify(todayData));
+    //     } else {
+    //         res.end();
+    //     }
+    // });
+    // getItems().then(function (foundItems) {
+    //     res.render("list", { listTitle: "Today", newItems: foundItems });
+    // });
 });
 
-router.post("/", function (req, res) {
+router.post("/", async (req, res) => {
     const itemName = req.body.newItem;
     const listName = req.body.list;
     const item = new Item({
@@ -26,12 +44,14 @@ router.post("/", function (req, res) {
     });
 
     async function findList() {
-        const foundList = await List.findOne({ name: listName });
-        if (foundList) {
-            foundList.items.push(item);
-            foundList.save();
+        const foundList = await List.findOne({ name: listName }).exec((err, foundData) => {
+            if (foundData) {
+            foundData.items.push(item);
+            foundData.save();
             res.redirect("/" + listName); //use lodash to turn this into lowercase
         }
+        });
+        
     };
 
     if (listName === "Today") {
@@ -93,3 +113,5 @@ router.get('/school', function (req, res) {
     };
     findList();
 });
+
+module.exports = router;

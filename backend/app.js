@@ -2,8 +2,9 @@ require('dotenv/config');
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const routesHandler = require("./routes/handler")
 const app = express();
-app.set('view engine', 'ejs');
+// app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', routesHandler);
