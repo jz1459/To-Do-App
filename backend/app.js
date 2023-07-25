@@ -78,25 +78,39 @@ app.post("/delete", function (req, res) {
     }
 });
 
-app.get("/:customListName", function (req, res) {
-    const customListName = _.capitalize(req.params.customListName);
-
+app.get('/work', function (req, res) {
     async function findList() {
-        const foundList = await List.findOne({ name: customListName });
+        const foundList = await List.findOne({ name: "Work" });
         if (!foundList) {
             const list = new List({
-                name: customListName
+                name: "Work"
             });
             list.save();
-            res.redirect("/" + customListName);
+            res.redirect("/work");
         } else {
-            res.render("list", { listTitle: foundList.name, newItems: foundList.items });
+            res.render("list", { listTitle: "Work", newItems: foundList.items });
         }
     };
     findList();
 });
 
-const port = process.env.PORT || 3000;
+app.get('/school', function (req, res) {
+    async function findList() {
+        const foundList = await List.findOne({ name: "School" });
+        if (!foundList) {
+            const list = new List({
+                name: "School"
+            });
+            list.save();
+            res.redirect("/school");
+        } else {
+            res.render("list", { listTitle: "School", newItems: foundList.items });
+        }
+    };
+    findList();
+});
+
+const port = process.env.PORT || 4000;
 
 app.listen(port, function () {
     console.log(`Server started on port ${port}.`);
