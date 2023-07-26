@@ -1,4 +1,4 @@
-html {
+/* html {
     background-color: #E4E9FD;
     background-image: -webkit-linear-gradient(65deg, #0787dc 50%, #E4E9FD 50%);
     min-height: 1000px;
@@ -45,6 +45,10 @@ input[type="checkbox"] {
     margin: 20px;
 }
 
+.test {
+    background-color: black;
+    color: red;
+}
 p {
     margin: 0;
     padding: 20px;
@@ -95,4 +99,4 @@ footer {
     color: white;
     color: rgba(0, 0, 0, 0.5);
     text-align: center;
-}
+} */

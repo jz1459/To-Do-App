@@ -4,7 +4,8 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const routesHandler = require("./routes/handler")
 const app = express();
-// app.set('view engine', 'ejs');
+const cors = require('cors');
+app.use(cors());
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', routesHandler);
