@@ -1,4 +1,10 @@
-/* html {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
     background-color: #E4E9FD;
     background-image: -webkit-linear-gradient(65deg, #0787dc 50%, #E4E9FD 50%);
     min-height: 1000px;
@@ -10,93 +16,122 @@ h1 {
     padding: 10px;
 }
 
-.heading,
-.item-list {
-    max-width: 400px;
-    margin: 50px auto;
+.container {
+    max-width: 700px;
+    margin: auto;
+    padding: 0;
+}
+
+.heading{
+    margin: 0 auto 50px auto;
     background: white;
     border-radius: 5px;
     box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
-}
-
-.heading {
     background-color: #0787dc;
     text-align: center;
 }
 
-
-.item {
-    min-height: 70px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #F1F1F1;
+.item-list {
+    background: #E4E9FD;
+    border-radius: 5px;
+    box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
+    padding-bottom: 50px;
 }
 
-.item:last-child {
-    border-bottom: 0;
-}
-
-input:checked+p {
-    text-decoration: line-through;
-    text-decoration-color: #0787dc;
-}
-
-input[type="checkbox"] {
-    margin: 20px;
-}
-
-.test {
-    background-color: black;
-    color: red;
-}
-p {
-    margin: 0;
-    padding: 20px;
-    font-size: 20px;
-    font-weight: 200;
-    color: #00204a;
-}
-
-form {
+.item-list p {
     text-align: center;
-    margin-left: 20px;
-}
-
-button {
-    min-height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    border-color: transparent;
-    background-color: #0787dc;
-    color: #fff;
-    font-size: 30px;
-    padding-bottom: 6px;
-    border-width: 0;
-}
-
-input[type="text"] {
-    text-align: center;
-    height: 60px;
-    top: 10px;
     border: none;
     background: transparent;
     font-size: 20px;
     font-weight: 200;
-    width: 313px;
+    width: 500px;
+    /* border-bottom: 1px solid rgba(200, 196, 196, 0.241); */
 }
 
-input[type="text"]:focus {
+
+/* Add New Item CSS */
+.addItem {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+}
+
+.addText {
+    height: 50px;
+}
+
+.addText input {
+    position: relative;
+    height: 50px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    font-weight: 200;
+    width: 500px;
+    border-bottom: 1px solid rgba(200, 196, 196, 0.241);
+    padding-bottom: 10px;
+    text-align: center;
+    margin-left: -100px;
+}
+    
+
+.addText input[type="text"]:focus {
     outline: none;
     box-shadow: inset 0 -3px 0 0 #0787dc;
 }
 
 ::placeholder {
-    color: grey;
+    color: rgb(155, 154, 154);
     opacity: 1;
+    text-align: center;
 }
 
-footer {
-    color: white;
+.addButton a {
+    /* display: inline-block; */
+    height: auto;
+    width: auto;
+    border-radius: 50%;
+    border-color: transparent;
+    margin-left: 50px;
+    color: #fff;
+    font-size: 25px;
+    border-width: 0;
+}
+/* End of Add New Item CSS */
+
+/* Individual Item CSS */
+.item {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-bottom: 1px solid #c4bbbb;
+}
+
+.todo-text {
+    position: relative;
+}
+
+.buttons a{
+    display: inline-block;
+    height: auto;
+    width: auto;
+    border-radius: 50%;
+    border-color: transparent;
+    margin-left: 15px;
+    color: #fff;
+    font-size: 25px;
+    border-width: 0;
+}
+
+/* End of Individual Item CSS */
+
+.footer {
+    background-color: #E4E9FD;
     color: rgba(0, 0, 0, 0.5);
     text-align: center;
-} */
+}

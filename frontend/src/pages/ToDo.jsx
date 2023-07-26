@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import ToDoItem from "../components/ToDoItem";
+import { Container, Row, Col } from "react-bootstrap";
 
 
 function ToDo() {
@@ -22,8 +23,7 @@ function ToDo() {
     const createItem = async (itemName) => {
         const res = await axios.post("http://localhost:4000/", { itemName });
         setToDoName("");
-        // setItems(res.data);//redirect
-        getItems();
+        setItems(res.data);//redirect
     };
     
     const updateTodo = async (_id, toDoName) => {
@@ -31,17 +31,14 @@ function ToDo() {
         console.log(_id);
         setToDoName("")
         setIsUpdating(false)
-        // setItems(res.data); //redirect
-        getItems();
+        setItems(res.data); //redirect
     };
 
     
     const deletingToDo = async (_id) => {
         console.log(_id);
         const res = await axios.delete("http://localhost:4000/", { data: { _id } });
-        // setDeleteId("");
         setItems(res.data); //redirect
-        // getItems();
     };
 
 
@@ -51,35 +48,44 @@ function ToDo() {
         setId(_id);
     };
 
-    // const [deleteId, setDeleteId] = useState("");
-    // const deleting = (_id) => {
-    //     setDeleteId(_id);
-    //     deletingToDo(deleteId);
-    //     // setDeleteId("");
-    // };
-
     return (
-        <section className="todoList" id="todoList">
-            <div className="input">
-                <input type="text" placeholder="Add Item" value={toDoName} onChange={(event) => setToDoName(event.target.value)} />
-            </div>
-            <div className="addButton">
-                <button onClick={isUpdate ? () => updateTodo(id, toDoName)
-                    : () => createItem(toDoName)}> {isUpdate ? "Update Item" : "Add Item"} </button>
-            </div>
-            <div className="list">
-                {
-                    items.map((item) =>
-                        <ToDoItem
-                            key={item._id}
-                            nameOfItem={item.name}
-                            updateItem={() => updating(item._id, item.name)}
-                            // deleteItem={() => deleting(item._id)}
-                            deleteItem={() => deletingToDo(item._id)}
-                        />
-                    )
-                }
-            </div>
+        <section className="item-list" id="item-list">
+            <Container>
+                <Row>
+                    <div className="heading">
+                        <h1>To-Do List</h1>
+                    </div>
+                </Row>
+                <div className="addItem">
+                    <Row>
+                        <Col size={8}>
+                            <div className="addText">
+                                <input type="text" placeholder="Add Item" value={toDoName} onChange={(event) => setToDoName(event.target.value)} />
+                            </div>
+                        </Col>
+                        <Col size={4}>
+                            <div className="addButton">
+                                <a onClick={isUpdate ? () => updateTodo(id, toDoName)
+                                    : () => createItem(toDoName)}><i className={isUpdate ? "bi bi-check" : "bi bi-plus-circle"}></i> </a>
+                            </div>
+                        </Col>
+                    </Row>
+                </div>
+                <div className="list">
+                    {
+                        items.map((item) =>
+                            <Row>
+                                <ToDoItem
+                                    key={item._id}
+                                    nameOfItem={item.name}
+                                    updateItem={() => updating(item._id, item.name)}
+                                    deleteItem={() => deletingToDo(item._id)}
+                                />
+                            </Row>
+                        )
+                    }
+                </div>
+            </Container>
         </section>
     );
 };
