@@ -22,19 +22,27 @@ router.post('/', async (req, res) => {
     });
 
     const newItem = await newToDo.save();
-    res.json(newItem);
+    const items = await Item.find({});
+    res.send(items);
+    // res.json(newItem);
 });
 
 router.put('/', async (req, res) => {
-    const { _id, newText } = req.body;
-    const toDoItem = await Item.findByIdAndUpdate(_id, {newText} )
-    res.json(toDoItem);
+    const { _id, toDoName } = req.body;
+    const toDoItem = await Item.findByIdAndUpdate(_id, { name : toDoName } )
+    // res.json(toDoItem);
+    const items = await Item.find({});
+    res.send(items);
 });
 
 router.delete('/', async (req, res) => {
-    const { deleteItemId } = req.body;
-    const toDoItem = await Item.findByIdAndRemove(deleteItemId);
-    res.status(204).json(toDoItem);
+    // console.log( req.body );
+    const { _id } = req.body;
+    // console.log(_id);
+    const toDoItem = await Item.findByIdAndRemove(_id);
+    // res.status(204).json(toDoItem);
+    const items = await Item.find({});
+    res.send(items);
 });
 
 

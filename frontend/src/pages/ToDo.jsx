@@ -10,34 +10,6 @@ function ToDo() {
     const [id, setId] = useState("");
     const [isUpdate, setIsUpdating] = useState(false);
 
-
-    // useEffect(() => {
-    //     fetchItems();
-    // }, []);
-
-    // const fetchItems = async () => {
-    //     const data = await fetch("http://localhost:4000/");
-    //     const items = await data.json();
-    //     setItems(items);
-    // };
-    // useEffect(() => {
-    //     fetch("http://localhost:4000/", {
-    //         method: "GET",
-    //     })
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //             console.log(data, "itemsData");
-    //             setItems(data.data);
-    //         });
-    // }, []);
-    
-    // const getItems = () => {
-    //     axios.get(url).then(
-    //         ({ data }) => {
-    //             setItems(data);
-    //         }
-    //     );
-    // };
     useEffect(() => {
         getItems();
     }, []);
@@ -56,16 +28,20 @@ function ToDo() {
     
     const updateTodo = async (_id, toDoName) => {
         const res = await axios.put("http://localhost:4000/", { _id, toDoName });
+        console.log(_id);
         setToDoName("")
         setIsUpdating(false)
         // setItems(res.data); //redirect
         getItems();
     };
 
+    
     const deletingToDo = async (_id) => {
-        const res = await axios.delete("http://localhost:4000/", { _id });
-        // setItems(res.data); //redirect
-        getItems();
+        console.log(_id);
+        const res = await axios.delete("http://localhost:4000/", { data: { _id } });
+        // setDeleteId("");
+        setItems(res.data); //redirect
+        // getItems();
     };
 
 
@@ -74,6 +50,13 @@ function ToDo() {
         setToDoName(newName);
         setId(_id);
     };
+
+    // const [deleteId, setDeleteId] = useState("");
+    // const deleting = (_id) => {
+    //     setDeleteId(_id);
+    //     deletingToDo(deleteId);
+    //     // setDeleteId("");
+    // };
 
     return (
         <section className="todoList" id="todoList">
@@ -86,11 +69,15 @@ function ToDo() {
             </div>
             <div className="list">
                 {
-                    items.map((item) => <ToDoItem
-                        key={item._id}
-                        nameOfItem={item.name}
-                        updateItem={() => updating(item._id, item.name)}
-                        deleteItem={() => deletingToDo(item._id, setItems)} />)
+                    items.map((item) =>
+                        <ToDoItem
+                            key={item._id}
+                            nameOfItem={item.name}
+                            updateItem={() => updating(item._id, item.name)}
+                            // deleteItem={() => deleting(item._id)}
+                            deleteItem={() => deletingToDo(item._id)}
+                        />
+                    )
                 }
             </div>
         </section>
@@ -123,3 +110,34 @@ export default ToDo;
         //         <button type="submit" name="list" value="Today"> + </button>
         //     </form>
         // </div>
+
+
+
+
+            // useEffect(() => {
+    //     fetchItems();
+    // }, []);
+
+    // const fetchItems = async () => {
+    //     const data = await fetch("http://localhost:4000/");
+    //     const items = await data.json();
+    //     setItems(items);
+    // };
+    // useEffect(() => {
+    //     fetch("http://localhost:4000/", {
+    //         method: "GET",
+    //     })
+    //         .then((res) => res.json())
+    //         .then((data) => {
+    //             console.log(data, "itemsData");
+    //             setItems(data.data);
+    //         });
+    // }, []);
+    
+    // const getItems = () => {
+    //     axios.get(url).then(
+    //         ({ data }) => {
+    //             setItems(data);
+    //         }
+    //     );
+    // };
