@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import ToDoItem from "../components/ToDoItem";
 import { Container, Row, Col } from "react-bootstrap";
-
+import { Wheel } from 'react-custom-roulette'
 
 function ToDo() {
     const url = "http://localhost:4000/todo";
@@ -10,6 +10,7 @@ function ToDo() {
     const [toDoName, setToDoName] = useState("");
     const [id, setId] = useState("");
     const [isUpdate, setIsUpdating] = useState(false);
+
 
     useEffect(() => {
         getItems();
@@ -23,7 +24,7 @@ function ToDo() {
     const createItem = async (itemName) => {
         const res = await axios.post("http://localhost:4000/", { itemName });
         setToDoName("");
-        setItems(res.data);//redirect
+        setItems(res.data);
     };
     
     const updateTodo = async (_id, toDoName) => {
@@ -31,14 +32,14 @@ function ToDo() {
         console.log(_id);
         setToDoName("")
         setIsUpdating(false)
-        setItems(res.data); //redirect
+        setItems(res.data);
     };
 
     
     const deletingToDo = async (_id) => {
         console.log(_id);
         const res = await axios.delete("http://localhost:4000/", { data: { _id } });
-        setItems(res.data); //redirect
+        setItems(res.data);
     };
 
 
@@ -47,6 +48,27 @@ function ToDo() {
         setToDoName(newName);
         setId(_id);
     };
+
+    const [mustSpin, setMustSpin] = useState(false);
+    const [prizeNumber, setPrizeNumber] = useState(0);
+
+    const handleSpinClick = () => {
+        if (!mustSpin) {
+            const newPrizeNumber = Math.floor(Math.random() * rouletteData.length);
+            setPrizeNumber(newPrizeNumber);
+            setMustSpin(true);
+        }
+    };
+
+    const [rouletteData, setRouletteData] = useState([]);
+    useEffect(() => {
+        const pieChartData = items.map(item => {
+            return {
+                option: item.name
+            }
+        });
+        setRouletteData(pieChartData);
+    }, [items]);
 
     return (
         <section className="item-list" id="item-list">
@@ -74,9 +96,8 @@ function ToDo() {
                 <div className="list">
                     {
                         items.map((item) =>
-                            <Row>
+                            <Row key={item._id}>
                                 <ToDoItem
-                                    key={item._id}
                                     nameOfItem={item.name}
                                     updateItem={() => updating(item._id, item.name)}
                                     deleteItem={() => deletingToDo(item._id)}
@@ -85,65 +106,21 @@ function ToDo() {
                         )
                     }
                 </div>
+                <div className="spinner">
+                    {console.log(rouletteData)}
+                    {rouletteData.length != 0 ?  <Wheel
+                        mustStartSpinning={mustSpin}
+                        prizeNumber={prizeNumber}
+                        data={rouletteData}
+                        onStopSpinning={() => {
+                            setMustSpin(false);
+                        }}
+                    /> : <h1>Add an Item for Spinner</h1>}
+                    <button onClick={handleSpinClick}>SPIN</button>
+                </div>
             </Container>
         </section>
     );
 };
 
 export default ToDo;
-
-
-
-
-
-
-
-// <div className="item-list">
-        //     {items.map(item => {
-        //         // return (
-        //             <form action="/delete" method="post">
-        //                 <div className="item">
-        //                     <input type="checkbox" onChange={() => this.handleClick({ item._id })} name="checkbox" value={item._id} />
-        //                     <p> {item.name} </p>
-        //                 </div>
-        //                 <input type="hidden" name="listName" value="Today"></input>
-        //             </form>
-        //         // );
-        //     })}
-            
-        //     <form className="item" action="/" method="post" >
-        //         <input type="text" name="newItem" placeholder="New Item" autocomplete="off" />
-        //         <button type="submit" name="list" value="Today"> + </button>
-        //     </form>
-        // </div>
-
-
-
-
-            // useEffect(() => {
-    //     fetchItems();
-    // }, []);
-
-    // const fetchItems = async () => {
-    //     const data = await fetch("http://localhost:4000/");
-    //     const items = await data.json();
-    //     setItems(items);
-    // };
-    // useEffect(() => {
-    //     fetch("http://localhost:4000/", {
-    //         method: "GET",
-    //     })
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //             console.log(data, "itemsData");
-    //             setItems(data.data);
-    //         });
-    // }, []);
-    
-    // const getItems = () => {
-    //     axios.get(url).then(
-    //         ({ data }) => {
-    //             setItems(data);
-    //         }
-    //     );
-    // };
