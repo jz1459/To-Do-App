@@ -19,7 +19,7 @@ function MyModal({ show, message, onClose }) {
                 </Container>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={onClose} className="proj-button">Close</Button>
+                <Button onClick={onClose} className="close-button">Close</Button>
             </Modal.Footer>
         </Modal>
     );

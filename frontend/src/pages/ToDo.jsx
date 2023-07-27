@@ -1,48 +1,46 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import ToDoItem from "../components/ToDoItem";
-import { Container, Row, Col, Modal } from "react-bootstrap";
+import { Container, Row, Col} from "react-bootstrap";
 import { Wheel } from 'react-custom-roulette';
 import MyModal from "../components/SpinnerMessage";
 
 function ToDo() {
-    const url = "http://localhost:4000/todo";
+    const url = "http://localhost:4000/";
     const [items, setItems] = useState([]);
     const [toDoName, setToDoName] = useState("");
     const [id, setId] = useState("");
     const [isUpdate, setIsUpdating] = useState(false);
 
-
+    //Routing and grabbing/setting the data from MongoDB
     useEffect(() => {
         getItems();
     }, []);
 
     const getItems = async () => {
-        const res = await axios.get("http://localhost:4000/");
+        const res = await axios.get(url);
         setItems(res.data);
     };
     
     const createItem = async (itemName) => {
-        const res = await axios.post("http://localhost:4000/", { itemName });
+        const res = await axios.post(url, { itemName });
         setToDoName("");
         setItems(res.data);
     };
     
     const updateTodo = async (_id, toDoName) => {
-        const res = await axios.put("http://localhost:4000/", { _id, toDoName });
+        const res = await axios.put(url, { _id, toDoName });
         console.log(_id);
         setToDoName("")
         setIsUpdating(false)
         setItems(res.data);
     };
 
-    
     const deletingToDo = async (_id) => {
         console.log(_id);
-        const res = await axios.delete("http://localhost:4000/", { data: { _id } });
+        const res = await axios.delete(url, { data: { _id } });
         setItems(res.data);
     };
-
 
     const updating = (_id, newName) => {
         setIsUpdating(true);
@@ -50,6 +48,9 @@ function ToDo() {
         setId(_id);
     };
 
+    // End of Routing and setting data via MongoDB
+
+    // Spinner Wheel Logic
     const [mustSpin, setMustSpin] = useState(false);
     const [prizeNumber, setPrizeNumber] = useState(0);
 
@@ -71,17 +72,31 @@ function ToDo() {
         setRouletteData(pieChartData);
     }, [items]);
 
+    // End of Spinner Wheel Logic
+
+    // Winning Task Popup Logic
     const [modalData, setModalData] = useState(null);
     const showModal = (project) => setModalData(project);
     const hideModal = () => setModalData(null);
 
+    // Grabbing the Current Date
+    const getDate = () => {
+        const today = new Date();
+        const options = {
+            weekday: "long",
+            day: "numeric",
+            month: "long"
+        };
+        return today.toLocaleDateString("en-US", options);
+    };
+    const [currentDate, setCurrentDate] = useState(getDate());
 
     return (
         <section className="item-list" id="item-list">
             <Container>
                 <Row>
                     <div className="heading">
-                        <h1>To-Do List</h1>
+                        <h1>{currentDate}</h1>
                     </div>
                 </Row>
                 <div className="addItem">
@@ -117,7 +132,7 @@ function ToDo() {
                     <div className="spinner">
                         <Row>
                             <Col>
-                                <Wheel 
+                                <Wheel
                                     mustStartSpinning={mustSpin}
                                     spinDuration={[0.5]}
                                     prizeNumber={prizeNumber}
@@ -150,18 +165,15 @@ function ToDo() {
                                     }}
                                 />
                                 <div className="spinnerMessage">
-                                    { modalData && (<MyModal show={modalData} message={modalData} onClose={hideModal} />) }
+                                    {modalData && (<MyModal show={modalData} message={modalData} onClose={hideModal} />)}
                                 </div>
                             </Col>
                             <Col>
-                                {/* <button onClick={handleSpinClick} disabled={mustSpin}> {(!mustSpin && rouletteData.length !== 0) ? "You should do: " + rouletteData[prizeNumber].option : "What task should I do next?"}</button> */}
                                 <button onClick={handleSpinClick} disabled={mustSpin}> What task should I do next?</button>
                             </Col>
                         </Row>
                     </div>
-                    : <h1>Add an Item for Spinner</h1>}
-                {/* <button onClick={handleSpinClick} disabled={mustSpin}> {(!mustSpin && rouletteData.length != 0) ? "You should do: " + rouletteData[prizeNumber].option : "What task should I do next?"}</button> */}
-                {/* <h1 className={message == "" ? "showMessage" : "hideMessage"}>{rouletteData.length != 0 ? <h1>You should do {rouletteData[prizeNumber].option} next.</h1> : / */}
+                    : <div className="emptyMessage"><h1>Add an Item for To-Do Spinner</h1></div>}
             </Container>
         </section>
     );

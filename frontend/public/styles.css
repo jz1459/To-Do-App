@@ -90,7 +90,7 @@ h1 {
 }
 
 .addButton a {
-    /* display: inline-block; */
+    display: inline-block;
     height: auto;
     width: auto;
     border-radius: 50%;
@@ -99,6 +99,10 @@ h1 {
     color: #fff;
     font-size: 25px;
     border-width: 0;
+}
+
+.addButton a:hover {
+    transform: scale(1.25);
 }
 /* End of Add New Item CSS */
 
@@ -128,6 +132,10 @@ h1 {
     border-width: 0;
 }
 
+.buttons a:hover{
+    transform: scale(1.25);
+}
+
 /* End of Individual Item CSS */
 
 /* Spinner CSS */
@@ -145,6 +153,18 @@ h1 {
     padding: 10px;
     border-radius: 20%;
 }
+
+.spinner button:hover {
+    transform: scale(1.1);
+}
+
+.emptyMessage h1 {
+    color: black;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 50px;
+}
+
 /* End of Spinner CSS */
 
 
@@ -156,11 +176,16 @@ h1 {
     text-align: center;
 }
 
-.modal-footer .proj-button {
+.modal-footer .close-button {
     color: white;
     background-color: #0787dc;
     border: none;
 }
+
+.modal-footer .close-button:hover {
+    transform: scale(1.1);
+}
+
 /* End of Spinner Message CSS */
 .footer {
     background-color: #E4E9FD;
