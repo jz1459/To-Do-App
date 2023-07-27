@@ -130,6 +130,38 @@ h1 {
 
 /* End of Individual Item CSS */
 
+/* Spinner CSS */
+.spinner .row {
+    margin-top: 50px;
+    display: flex;
+    text-align: center;
+    margin-left: 10px;
+}
+.spinner button {
+    display: inline-block;
+    margin-top: 100%;
+    background-color: #0787dc;
+    color: white;
+    padding: 10px;
+    border-radius: 20%;
+}
+/* End of Spinner CSS */
+
+
+/* Spinner Message CSS */
+.modal-body h4 {
+    color: black;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.modal-footer .proj-button {
+    color: white;
+    background-color: #0787dc;
+    border: none;
+}
+/* End of Spinner Message CSS */
 .footer {
     background-color: #E4E9FD;
     color: rgba(0, 0, 0, 0.5);

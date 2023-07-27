@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import ToDoItem from "../components/ToDoItem";
-import { Container, Row, Col } from "react-bootstrap";
-import { Wheel } from 'react-custom-roulette'
+import { Container, Row, Col, Modal } from "react-bootstrap";
+import { Wheel } from 'react-custom-roulette';
+import MyModal from "../components/SpinnerMessage";
 
 function ToDo() {
     const url = "http://localhost:4000/todo";
@@ -70,6 +71,11 @@ function ToDo() {
         setRouletteData(pieChartData);
     }, [items]);
 
+    const [modalData, setModalData] = useState(null);
+    const showModal = (project) => setModalData(project);
+    const hideModal = () => setModalData(null);
+
+
     return (
         <section className="item-list" id="item-list">
             <Container>
@@ -106,18 +112,56 @@ function ToDo() {
                         )
                     }
                 </div>
-                <div className="spinner">
-                    {console.log(rouletteData)}
-                    {rouletteData.length != 0 ?  <Wheel
-                        mustStartSpinning={mustSpin}
-                        prizeNumber={prizeNumber}
-                        data={rouletteData}
-                        onStopSpinning={() => {
-                            setMustSpin(false);
-                        }}
-                    /> : <h1>Add an Item for Spinner</h1>}
-                    <button onClick={handleSpinClick}>SPIN</button>
-                </div>
+                {console.log(rouletteData)}
+                {rouletteData.length !== 0 ?
+                    <div className="spinner">
+                        <Row>
+                            <Col>
+                                <Wheel 
+                                    mustStartSpinning={mustSpin}
+                                    spinDuration={[0.5]}
+                                    prizeNumber={prizeNumber}
+                                    outerBorderColor={["#ccc"]}
+                                    outerBorderWidth={[9]}
+                                    innerBorderColor={["#f2f2f2"]}
+                                    radiusLineColor={["tranparent"]}
+                                    radiusLineWidth={[1]}
+                                    textColors={["#f5f5f5"]}
+                                    textDistance={55}
+                                    fontSize={[15]}
+                                    backgroundColors={[
+                                        "#3f297e",
+                                        "#175fa9",
+                                        "#169ed8",
+                                        "#239b63",
+                                        "#64b031",
+                                        "#efe61f",
+                                        "#f7a416",
+                                        "#e6471d",
+                                        "#dc0936",
+                                        "#e5177b",
+                                        "#be1180",
+                                        "#871f7f"
+                                    ]}
+                                    data={rouletteData}
+                                    onStopSpinning={() => {
+                                        setMustSpin(false);
+                                        showModal(rouletteData[prizeNumber].option)
+                                    }}
+                                />
+                                <div className="spinnerMessage">
+                                    { modalData && (<MyModal show={modalData} message={modalData} onClose={hideModal} />) }
+                                </div>
+                            </Col>
+                            <Col>
+                                {/* <button onClick={handleSpinClick} disabled={mustSpin}> {(!mustSpin && rouletteData.length !== 0) ? "You should do: " + rouletteData[prizeNumber].option : "What task should I do next?"}</button> */}
+                                <button onClick={handleSpinClick} disabled={mustSpin}> What task should I do next?</button>
+                            </Col>
+                        </Row>
+                    </div>
+                    : <h1>Add an Item for Spinner</h1>}
+                {/* <button onClick={handleSpinClick} disabled={mustSpin}> {(!mustSpin && rouletteData.length != 0) ? "You should do: " + rouletteData[prizeNumber].option : "What task should I do next?"}</button> */}
+                {/* <h1 className={message == "" ? "showMessage" : "hideMessage"}>{rouletteData.length != 0 ? <h1>You should do {rouletteData[prizeNumber].option} next.</h1> : / */}
             </Container>
         </section>
     );
